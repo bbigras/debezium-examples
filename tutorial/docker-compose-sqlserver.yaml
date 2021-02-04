@@ -1,19 +1,10 @@
 version: '2'
 services:
-  zookeeper:
-    image: debezium/zookeeper:${DEBEZIUM_VERSION}
-    ports:
-     - 2181:2181
-     - 2888:2888
-     - 3888:3888
   kafka:
-    image: debezium/kafka:${DEBEZIUM_VERSION}
+    image: vectorized/redpanda
     ports:
-     - 9092:9092
-    links:
-     - zookeeper
-    environment:
-     - ZOOKEEPER_CONNECT=zookeeper:2181
+      - 9092:9092
+    command: "start --kafka-addr 0.0.0.0:9092 --advertise-kafka-addr kafka:9092 --overprovisioned"
   sqlserver:
     image: microsoft/mssql-server-linux:2017-CU9-GDR2
     ports:
